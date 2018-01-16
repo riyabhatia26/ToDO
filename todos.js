@@ -1,39 +1,26 @@
-var todos = ["Buy New Turtle"];
+// Check Off Specific Todos By Clicking
+$("ul").on("click", "li", function(){
+	$(this).toggleClass("completed");
+});
 
-var input = prompt("What would you like to do?");
-
-while(input !== "quit"){
-	//handle input
-	if(input === "list") {
-		printList();
-	} else if(input === "new") {
-		addTodo();
-	} else if(input === "delete") {
-		deleteTodo();
-	}
-	//ask again for new input
-	input = prompt("What would you like to do?");
-}
-console.log("OK, YOU QUIT THE APP");
-
-function printList() {
-	console.log("**********");
-	todos.forEach(function(todo, index){
-		console.log(index + ": " + todo);
+//Click on X to delete Todo
+$("ul").on("click", "span", function(event){
+	$(this).parent().fadeOut(500,function(){
+		$(this).remove();
 	});
-	console.log("**********");
-}
+	event.stopPropagation();
+});
 
-function addTodo(){
-	//ask for new todo
-	var newTodo = prompt("Enter new todo");
-	//add to todos array
-	todos.push(newTodo);
-	console.log(newTodo + " added to list")
-}
+$("input[type='text']").keypress(function(event){
+	if(event.which === 13){
+		//grabbing new todo text from input
+		var todoText = $(this).val();
+		$(this).val("");
+		//create a new li and add to ul
+		$("ul").append("<li><span><i class='fa fa-trash'></i></span> " + todoText + "</li>")
+	}
+});
 
-function deleteTodo(){
-	var index = prompt("Enter index of todo to delete");
-	todos.splice(index, 1);
-	console.log("Todo Removed")
-}
+$(".fa-plus").click(function(){
+	$("input[type='text']").fadeToggle();
+});
